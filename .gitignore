@@ -3,3 +3,9 @@
 ################################################################################
 
 /.vs/SimpleServiceBus/v15
+/DS.SimpleServiceBus/bin
+/DS.SimpleServiceBus/obj
+/DS.SimpleServiceBus.ConsoleApp/bin
+/DS.SimpleServiceBus.ConsoleApp/obj
+/DS.SimpleServiceBus.Tests/bin
+/DS.SimpleServiceBus.Tests/obj
