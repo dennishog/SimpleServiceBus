@@ -1,9 +1,9 @@
 # SimpleServiceBus
 
-##Install:
+## Install:
 Install using nuget DS.SimpleServiceBus
 
-##Usage:
+## Usage:
 Install RabbitMQ and use the management gui to create a new virtual host
 
 Create an instance of BusService:
@@ -21,7 +21,7 @@ Start the Bus
 await busService.StartAsync(CancellationToken.None);
 ```
 
-##Events
+## Events
 Create a model class implementing the IModel interface
 Create an event class implementing the IEvent<TModel> using your newly created model class (set EventId to a new guid)
 Create an eventhandler implementing the IEventHandler<TEvent> using your newly created event class
@@ -41,7 +41,7 @@ Publish an event
 await eventService.PublishAsync(InstanceOfYourEventClass, CancellationToken.None);
 ```
 
-##Commands
+## Commands
 Create a class implementing the IRequestModel interface
 Create a class implementing the IResponseModel interface
 Create a commandhandler implementing the ICommandHandler<TRequestModel, TResponseModel> using your newly created classes
