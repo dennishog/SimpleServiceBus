@@ -17,7 +17,7 @@ namespace DS.SimpleServiceBus.Services
     ///     Used for sending events and registering EventHandlers. The bus must be created and started before EventService is
     ///     instantiated.
     /// </summary>
-    public class EventService : IEventService, IDisposable
+    public class EventService : IEventService
     {
         private readonly IBusService _busService;
         private readonly IEventServiceConfiguration _configuration;
@@ -37,12 +37,6 @@ namespace DS.SimpleServiceBus.Services
                 .Wait();
 
             _eventHandlers = new List<IEventHandler>();
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -87,13 +81,9 @@ namespace DS.SimpleServiceBus.Services
                 await eventListener.ExecuteInternalAsync(@event, cancellationToken);
         }
 
-        protected virtual void Dispose(bool disposing)
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
-            if (disposing)
-                Task.Run(async () =>
-                {
-                    await _busService.DisconnectHandlerAsync(_configuration.EventQueueName, CancellationToken.None);
-                });
+            await _busService.DisconnectHandlerAsync(_configuration.EventQueueName, cancellationToken);
         }
     }
 }

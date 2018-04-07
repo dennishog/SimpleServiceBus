@@ -9,6 +9,7 @@ using DS.SimpleServiceBus.Configuration;
 using DS.SimpleServiceBus.Configuration.Interfaces;
 using DS.SimpleServiceBus.Events;
 using DS.SimpleServiceBus.Events.Interfaces;
+using DS.SimpleServiceBus.Exceptions;
 using DS.SimpleServiceBus.Services.Interfaces;
 using MassTransit;
 using MassTransit.RabbitMqTransport;
@@ -66,7 +67,7 @@ namespace DS.SimpleServiceBus.Services
 
         public async Task DisconnectConsumerAsync(string queueName, CancellationToken cancellationToken)
         {
-            if (_handles.ContainsKey(queueName))
+            if (!_handles.ContainsKey(queueName))
                 throw new Exception("No consumer exists with the supplied queueName");
 
             await _handles.Single(x => x.Key == queueName).Value.StopAsync(cancellationToken);
@@ -90,10 +91,17 @@ namespace DS.SimpleServiceBus.Services
         public async Task<ICommandMessage> Request(string queueName, ICommandMessage request,
             CancellationToken cancellationToken)
         {
-            var handle = _handles.Single(x => x.Key == queueName);
+            try
+            {
+                var handle = _handles.Single(x => x.Key == queueName).Value;
 
-            await handle.Value.Ready;
-
+                await handle.Ready;
+            }
+            catch (Exception)
+            {
+                throw new ReceiveEndpointNotConnectedException($"{queueName} has no connected ReceiveEndpoint");
+            }
+            
             return await _requestResponseClients.Single(x => x.Key == queueName).Value
                 .Request(request, cancellationToken);
         }
@@ -118,7 +126,7 @@ namespace DS.SimpleServiceBus.Services
 
         public async Task DisconnectHandlerAsync(string queueName, CancellationToken cancellationToken)
         {
-            if (_handles.ContainsKey(queueName))
+            if (!_handles.ContainsKey(queueName))
                 throw new Exception("No handler exists with the supplied queueName");
 
             await _handles.Single(x => x.Key == queueName).Value.StopAsync(cancellationToken);
@@ -129,6 +137,9 @@ namespace DS.SimpleServiceBus.Services
         public async Task PublishAsync<T>(T message, CancellationToken cancellationToken)
             where T : EventMessage
         {
+            // Wait for all connected handlers to be ready before publishing any messages
+            _handles.ToList().ForEach(async x => await x.Value.Ready);
+
             await _bus.Publish(message, cancellationToken);
         }
 
@@ -141,7 +152,15 @@ namespace DS.SimpleServiceBus.Services
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
-                _bus.Stop(TimeSpan.FromSeconds(10));
+            {
+                Task.Run(async () =>
+                {
+                    // Stop all ReceiveEndpoints before stopping the bus
+                    _handles.ToList().ForEach(async x => await x.Value.StopAsync(CancellationToken.None));
+
+                    await _bus.StopAsync(TimeSpan.FromSeconds(10));
+                });
+            }
         }
     }
 }

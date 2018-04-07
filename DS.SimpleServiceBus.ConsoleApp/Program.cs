@@ -66,6 +66,10 @@ namespace DS.SimpleServiceBus.ConsoleApp
                 Console.WriteLine($"Response with id {response2.Id} and name {response2.Name}");
             }
 
+            await commandService.StopAsync(CancellationToken.None);
+            await commandService2.StopAsync(CancellationToken.None);
+            await eventService.StopAsync(CancellationToken.None);
+
             Console.ReadLine();
         }
     }

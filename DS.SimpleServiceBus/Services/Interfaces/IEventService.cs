@@ -10,5 +10,6 @@ namespace DS.SimpleServiceBus.Services.Interfaces
         void RegisterEventHandler<T>() where T : IEventHandler;
         void RegisterEventHandler(IEventHandler eventHandler);
         Task EventMessageReceived(IEventMessage eventMessage, CancellationToken cancellationToken);
+        Task StopAsync(CancellationToken cancellationToken);
     }
 }

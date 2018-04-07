@@ -1,16 +1,16 @@
 # SimpleServiceBus
 
-## Install:
+## Install
 Install using nuget DS.SimpleServiceBus
 
-## Usage:
+## Usage
 Install RabbitMQ and use the management gui to create a new virtual host
 
 Create an instance of BusService:
 ```C#
 var busService = new BusService(cfg =>
 {
-	cfg.Uri = "rabbitmq://localhost/yourvirtualhostname";
+    cfg.Uri = "rabbitmq://localhost/yourvirtualhostname";
     cfg.Username = "yourusername";
     cfg.Password = "yourpassword";
 });

@@ -17,7 +17,7 @@ namespace DS.SimpleServiceBus.Services
     ///     Used for sending and receiving request/response and registering CommandHandlers. The bus must be created and
     ///     started before CommandService is instantiated.
     /// </summary>
-    public class CommandService : ICommandService, IDisposable
+    public class CommandService : ICommandService
     {
         private readonly IBusService _busService;
         private readonly ICollection<ICommandHandler> _commandHandlers;
@@ -85,20 +85,9 @@ namespace DS.SimpleServiceBus.Services
             await context.RespondAsync(commandMessage);
         }
 
-        public void Dispose()
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-                Task.Run(async () =>
-                {
-                    await _busService.DisconnectConsumerAsync(_configuration.CommandQueueName,
-                        CancellationToken.None);
-                });
+            await _busService.DisconnectConsumerAsync(_configuration.CommandQueueName, cancellationToken);
         }
     }
 }
