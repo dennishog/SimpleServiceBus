@@ -23,7 +23,7 @@ await busService.StartAsync(CancellationToken.None);
 
 ## Events
 Create a model class implementing the IModel interface
-Create an event class implementing the IEvent<TModel> using your newly created model class (set EventId to a new guid)
+Create an event class implementing the IEvent<TModel> using your newly created model class
 Create an eventhandler implementing the IEventHandler<TEvent> using your newly created event class
 
 Create an instance of EventService

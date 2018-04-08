@@ -1,12 +1,12 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using DS.SimpleServiceBus.Events;
+﻿using DS.SimpleServiceBus.Events;
 using DS.SimpleServiceBus.Events.Interfaces;
 using DS.SimpleServiceBus.Extensions;
 using DS.SimpleServiceBus.Services;
 using DS.SimpleServiceBus.Services.Interfaces;
 using DS.SimpleServiceBus.Tests.Fakes;
 using NSubstitute;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace DS.SimpleServiceBus.Tests.Services
@@ -16,7 +16,7 @@ namespace DS.SimpleServiceBus.Tests.Services
         public EventServiceTests()
         {
             _busService = Substitute.For<IBusService>();
-            _eventHandler = Substitute.For<IEventHandler>();
+            _eventHandler = Substitute.For<EventHandler<EventFake>>();
             _systemUnderTest = new EventService(_busService, q => q.EventQueueName = "test");
         }
 
@@ -29,15 +29,13 @@ namespace DS.SimpleServiceBus.Tests.Services
         {
             // Arrange
             var @event = EventFake.GetEventFake();
-            _eventHandler.ForEvent.Returns(@event.EventId);
 
             _busService.When(b => b.PublishAsync(Arg.Any<EventMessage>(), Arg.Any<CancellationToken>())).Do(
                 Callback.Always(async x =>
                 {
                     await _systemUnderTest.EventMessageReceived(new EventMessage
                     {
-                        Event = @event.ToBytes(),
-                        MessageId = @event.EventId
+                        Event = @event.ToBytes()
                     }, CancellationToken.None);
                 }));
 

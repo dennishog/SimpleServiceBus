@@ -16,6 +16,11 @@ namespace DS.SimpleServiceBus.Extensions
             return GenericSerializer.DeSerialize<T>(responseData);
         }
 
+        public static IResponseModel GetResponse(this byte[] responseData)
+        {
+            return GenericSerializer.DeSerialize<IResponseModel>(responseData);
+        }
+
         public static IRequestModel GetRequest(this byte[] requestData)
         {
             return GenericSerializer.DeSerialize<IRequestModel>(requestData);

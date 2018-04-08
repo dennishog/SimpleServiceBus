@@ -49,7 +49,7 @@ namespace DS.SimpleServiceBus.ConsoleApp
 
             eventService.PublishAsync(new TestEvent2
             {
-                Model = new TestModel {Id = 10, Name = "Andreas"}
+                Model = new TestModel { Id = 10, Name = "Andreas" }
             }, CancellationToken.None).Wait();
 
             var request = new TestRequest {Id = 10};

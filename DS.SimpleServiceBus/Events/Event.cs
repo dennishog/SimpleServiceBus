@@ -1,5 +1,4 @@
-﻿using System;
-using DS.SimpleServiceBus.Events.Interfaces;
+﻿using DS.SimpleServiceBus.Events.Interfaces;
 
 namespace DS.SimpleServiceBus.Events
 {
@@ -7,6 +6,5 @@ namespace DS.SimpleServiceBus.Events
         where TModel : IModel
     {
         public TModel Model { get; set; }
-        public Guid EventId { get; set; }
     }
 }

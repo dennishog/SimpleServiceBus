@@ -49,7 +49,6 @@ namespace DS.SimpleServiceBus.Services
         {
             var eventMessage = new EventMessage
             {
-                MessageId = @event.EventId,
                 Event = @event.ToBytes()
             };
 
@@ -72,10 +71,13 @@ namespace DS.SimpleServiceBus.Services
 
         public async Task EventMessageReceived(IEventMessage eventMessage, CancellationToken cancellationToken)
         {
-            Debug.WriteLine($"Recieved event with id {eventMessage.MessageId}");
+            Debug.WriteLine($"Recieved event for type {eventMessage.GetType()}");
 
             var @event = eventMessage.Event.FromBytes();
-            var listeners = _eventHandlers.Where(w => w.ForEvent == @event.EventId);
+
+            // Get listeners for @event
+            var listeners =
+                _eventHandlers.Where(w => w.GetType().BaseType.GetGenericArguments().First() == @event.GetType());
 
             foreach (var eventListener in listeners)
                 await eventListener.ExecuteInternalAsync(@event, cancellationToken);
