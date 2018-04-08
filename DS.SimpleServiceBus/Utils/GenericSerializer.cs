@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.IO.Compression;
-using System.Runtime.Serialization.Formatters.Binary;
 using Polenter.Serialization;
 
 namespace DS.SimpleServiceBus.Utils
@@ -30,7 +29,7 @@ namespace DS.SimpleServiceBus.Utils
             {
                 var obj = serializer.Deserialize(memoryStream);
 
-                return (T)obj;
+                return (T) obj;
             }
         }
 

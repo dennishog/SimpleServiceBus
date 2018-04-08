@@ -1,40 +1,58 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using DS.SimpleServiceBus.Events;
+using DS.SimpleServiceBus.Events.Interfaces;
+using DS.SimpleServiceBus.Extensions;
+using DS.SimpleServiceBus.Services;
+using DS.SimpleServiceBus.Services.Interfaces;
+using DS.SimpleServiceBus.Tests.Fakes;
+using NSubstitute;
 using Xunit;
 
 namespace DS.SimpleServiceBus.Tests.Services
 {
     public class EventServiceTests
     {
-        [Fact]
-        public async Task publishEvent()
+        public EventServiceTests()
         {
-            //// Arrange
-            //var responseModel = ResponseModelFake.GetResponseModelFake();
-            //var requestModel = RequestModelFake.GetRequestModelFake();
+            _busService = Substitute.For<IBusService>();
+            _eventHandler = Substitute.For<IEventHandler>();
+            _systemUnderTest = new EventService(_busService, q => q.EventQueueName = "test");
+        }
 
-            //var serviceBus = Substitute.For<IBusService>();
-            //var commandHandler = Substitute.For<ICommandHandler>();
+        private readonly IBusService _busService;
+        private readonly IEventHandler _eventHandler;
+        private readonly IEventService _systemUnderTest;
 
-            //var requestClient = Substitute.For<IRequestResponseClient>();
-            //requestClient.Request(Arg.Any<ICommandMessage>(), Arg.Any<CancellationToken>())
-            //    .Returns(CommandMessageFake.GetCommandMessageFake(requestModel, responseModel));
+        [Fact]
+        public async Task PublishSuccessful()
+        {
+            // Arrange
+            var @event = EventFake.GetEventFake();
+            _eventHandler.ForEvent.Returns(@event.EventId);
 
-            //serviceBus.CreateRequestClientAsync(Arg.Any<string>(), Arg.Any<TimeSpan>(),
-            //    Arg.Any<CancellationToken>()).ReturnsForAnyArgs(requestClient);
+            _busService.When(b => b.PublishAsync(Arg.Any<EventMessage>(), Arg.Any<CancellationToken>())).Do(
+                Callback.Always(async x =>
+                {
+                    await _systemUnderTest.EventMessageReceived(new EventMessage
+                    {
+                        Event = @event.ToBytes(),
+                        MessageId = @event.EventId
+                    }, CancellationToken.None);
+                }));
 
-            //commandHandler.ExecuteInternalAsync(Arg.Any<IRequestModel>(), CancellationToken.None)
-            //    .Returns(responseModel);
-            ////commandHandler.ExecuteAsync(Arg.Any<RequestModelFake>(), Arg.Any<CancellationToken>()).Returns(responseModel);
+            // Act
+            _systemUnderTest.RegisterEventHandler(_eventHandler);
+            await _systemUnderTest.PublishAsync(@event, CancellationToken.None);
 
-            //var commandService = new CommandService(serviceBus, new CommandServiceConfiguration("test"));
-            //commandService.RegisterCommandHandler(commandHandler);
+            // Assert
+            await _busService.Received().PublishAsync(Arg.Any<EventMessage>(), Arg.Any<CancellationToken>());
 
-            //// Act
-            //var response = await commandService.SendRequestAsync<RequestModelFake, ResponseModelFake>(requestModel, CancellationToken.None);
-
-            //// Assert
-            //Assert.Equal(10, response.Id);
-            //Assert.Equal("Dennis Hogström", response.Name);
+            await _eventHandler.Received()
+                .ExecuteInternalAsync(
+                    Arg.Is<EventFake>(x =>
+                        x.Model.Id == ((EventFake) @event).Model.Id && x.Model.Name == ((EventFake) @event).Model.Name),
+                    Arg.Any<CancellationToken>());
         }
     }
 }

@@ -18,11 +18,11 @@ namespace DS.SimpleServiceBus.Services
 {
     public class BusService : IBusService, IDisposable
     {
+        private readonly IBusServiceConfiguration _configuration;
         private readonly Dictionary<string, HostReceiveEndpointHandle> _handles;
         private readonly Dictionary<string, IRequestResponseClient> _requestResponseClients;
         private IBusControl _bus;
         private IRabbitMqHost _host;
-        private readonly IBusServiceConfiguration _configuration;
 
         public BusService(Action<IBusServiceConfiguration> action)
         {
@@ -33,7 +33,7 @@ namespace DS.SimpleServiceBus.Services
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
-        {            
+        {
             _bus = Bus.Factory.CreateUsingRabbitMq(cfg =>
             {
                 _host = cfg.Host(new Uri(_configuration.Uri), h =>
@@ -101,7 +101,7 @@ namespace DS.SimpleServiceBus.Services
             {
                 throw new ReceiveEndpointNotConnectedException($"{queueName} has no connected ReceiveEndpoint");
             }
-            
+
             return await _requestResponseClients.Single(x => x.Key == queueName).Value
                 .Request(request, cancellationToken);
         }
@@ -113,11 +113,11 @@ namespace DS.SimpleServiceBus.Services
                 throw new Exception("Cant add second handler with the same queueName");
 
             var handle = _host.ConnectReceiveEndpoint(queueName,
-            e =>
-            {
-                e.Handler<IEventMessage>(async context =>
-                    await messageReceived(context.Message, cancellationToken));
-            });
+                e =>
+                {
+                    e.Handler<IEventMessage>(async context =>
+                        await messageReceived(context.Message, cancellationToken));
+                });
 
             await handle.Ready;
 
@@ -152,7 +152,6 @@ namespace DS.SimpleServiceBus.Services
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
-            {
                 Task.Run(async () =>
                 {
                     // Stop all ReceiveEndpoints before stopping the bus
@@ -160,7 +159,6 @@ namespace DS.SimpleServiceBus.Services
 
                     await _bus.StopAsync(TimeSpan.FromSeconds(10));
                 });
-            }
         }
     }
 }

@@ -1,11 +1,8 @@
-﻿using DS.SimpleServiceBus.Events.Interfaces;
-using Newtonsoft.Json;
-using System;
-using System.Text;
+﻿using System;
+using DS.SimpleServiceBus.Events.Interfaces;
 
 namespace DS.SimpleServiceBus.Events
 {
-    [Serializable]
     public abstract class Event<TModel> : IEvent
         where TModel : IModel
     {

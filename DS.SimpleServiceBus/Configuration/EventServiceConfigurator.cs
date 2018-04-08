@@ -1,5 +1,5 @@
-﻿using DS.SimpleServiceBus.Configuration.Interfaces;
-using System;
+﻿using System;
+using DS.SimpleServiceBus.Configuration.Interfaces;
 
 namespace DS.SimpleServiceBus.Configuration
 {

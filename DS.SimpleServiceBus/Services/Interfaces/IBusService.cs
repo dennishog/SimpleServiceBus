@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using DS.SimpleServiceBus.Commands.Interfaces;
-using DS.SimpleServiceBus.Configuration.Interfaces;
 using DS.SimpleServiceBus.Events;
 using DS.SimpleServiceBus.Events.Interfaces;
 

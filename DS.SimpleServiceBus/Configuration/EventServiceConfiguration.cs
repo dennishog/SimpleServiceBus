@@ -6,7 +6,6 @@ namespace DS.SimpleServiceBus.Configuration
     {
         public EventServiceConfiguration()
         {
-            
         }
 
         public EventServiceConfiguration(string eventQueueName)

@@ -6,7 +6,6 @@ namespace DS.SimpleServiceBus.Configuration
     {
         public CommandServiceConfiguration()
         {
-            
         }
 
         public CommandServiceConfiguration(string commandQueueName)

@@ -1,6 +1,6 @@
-﻿using DS.SimpleServiceBus.ConsoleApp.Events.Models;
+﻿using System;
+using DS.SimpleServiceBus.ConsoleApp.Events.Models;
 using DS.SimpleServiceBus.Events;
-using System;
 
 namespace DS.SimpleServiceBus.ConsoleApp.Events
 {
