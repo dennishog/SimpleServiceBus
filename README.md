@@ -8,11 +8,11 @@ Install RabbitMQ and use the management gui to create a new virtual host
 
 Create an instance of BusService:
 ```C#
-var busService = new BusService(cfg =>
+var busService = BusServiceFactory.CreateUsingRabbitMq(cfg =>
 {
-    cfg.Uri = "rabbitmq://localhost/yourvirtualhostname";
-    cfg.Username = "yourusername";
-    cfg.Password = "yourpassword";
+    cfg.Uri = "rabbitmq://localhost/dsevents";
+    cfg.Username = "guest";
+    cfg.Password = "guest";
 });
 ```
 
