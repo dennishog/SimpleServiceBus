@@ -1,48 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using DS.SimpleServiceBus.Commands;
+﻿using DS.SimpleServiceBus.Commands;
 using DS.SimpleServiceBus.Commands.Interfaces;
-using DS.SimpleServiceBus.Configuration;
-using DS.SimpleServiceBus.Configuration.Interfaces;
 using DS.SimpleServiceBus.Events;
 using DS.SimpleServiceBus.Events.Interfaces;
 using DS.SimpleServiceBus.Exceptions;
 using DS.SimpleServiceBus.Services.Interfaces;
 using MassTransit;
 using MassTransit.RabbitMqTransport;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DS.SimpleServiceBus.Services
 {
-    public class BusService : IBusService, IDisposable
+    internal class BusService : IBusService, IDisposable
     {
-        private readonly IBusServiceConfiguration _configuration;
         private readonly Dictionary<string, HostReceiveEndpointHandle> _handles;
         private readonly Dictionary<string, IRequestResponseClient> _requestResponseClients;
-        private IBusControl _bus;
-        private IRabbitMqHost _host;
+        private readonly IBusControl _bus;
+        private readonly IRabbitMqHost _host;
 
-        public BusService(Action<IBusServiceConfiguration> action)
+        public BusService(IBusControl bus, IRabbitMqHost host)
         {
-            _configuration = BusServiceConfigurator.Configure(action);
-
+            
             _handles = new Dictionary<string, HostReceiveEndpointHandle>();
             _requestResponseClients = new Dictionary<string, IRequestResponseClient>();
+
+            _bus = bus;
+            _host = host;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            _bus = Bus.Factory.CreateUsingRabbitMq(cfg =>
-            {
-                _host = cfg.Host(new Uri(_configuration.Uri), h =>
-                {
-                    h.Username(_configuration.Username);
-                    h.Password(_configuration.Password);
-                });
-            });
-
             await _bus.StartAsync(cancellationToken);
         }
 

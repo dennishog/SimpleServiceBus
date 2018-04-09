@@ -2,13 +2,13 @@
 
 namespace DS.SimpleServiceBus.Configuration
 {
-    public class BusServiceConfiguration : IBusServiceConfiguration
+    public class RabbitMqBusServiceConfiguration : IRabbitMqBusServiceConfiguration
     {
-        public BusServiceConfiguration()
+        public RabbitMqBusServiceConfiguration()
         {
         }
 
-        public BusServiceConfiguration(string uri, string username, string password)
+        public RabbitMqBusServiceConfiguration(string uri, string username, string password)
         {
             Uri = uri;
             Username = username;

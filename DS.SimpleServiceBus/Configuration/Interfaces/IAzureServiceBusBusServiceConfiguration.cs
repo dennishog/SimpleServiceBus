@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DS.SimpleServiceBus.Configuration.Interfaces
 {
-    public interface IBusServiceConfiguration
+    public interface IAzureServiceBusBusServiceConfiguration
     {
         
     }

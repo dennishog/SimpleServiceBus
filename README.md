@@ -22,9 +22,9 @@ await busService.StartAsync(CancellationToken.None);
 ```
 
 ## Events
-Create a model class implementing the IModel interface
-Create an event class implementing the IEvent<TModel> using your newly created model class
-Create an eventhandler implementing the IEventHandler<TEvent> using your newly created event class
+- Create a model class implementing the IModel interface
+- Create an event class implementing the IEvent<TModel> using your newly created model class
+- Create an eventhandler implementing the IEventHandler<TEvent> using your newly created event class
 
 Create an instance of EventService
 ```C#
@@ -42,9 +42,9 @@ await eventService.PublishAsync(InstanceOfYourEventClass, CancellationToken.None
 ```
 
 ## Commands
-Create a class implementing the IRequestModel interface
-Create a class implementing the IResponseModel interface
-Create a commandhandler implementing the ICommandHandler<TRequestModel, TResponseModel> using your newly created classes
+- Create a class implementing the IRequestModel interface
+- Create a class implementing the IResponseModel interface
+- Create a commandhandler implementing the ICommandHandler<TRequestModel, TResponseModel> using your newly created classes
 
 Create an instance of CommandService
 ```C#

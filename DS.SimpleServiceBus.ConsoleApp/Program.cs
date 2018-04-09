@@ -7,6 +7,7 @@ using DS.SimpleServiceBus.ConsoleApp.Commands.Models.Response;
 using DS.SimpleServiceBus.ConsoleApp.Events;
 using DS.SimpleServiceBus.ConsoleApp.Events.EventHandlers;
 using DS.SimpleServiceBus.ConsoleApp.Events.Models;
+using DS.SimpleServiceBus.Factories;
 using DS.SimpleServiceBus.Services;
 
 namespace DS.SimpleServiceBus.ConsoleApp
@@ -22,12 +23,19 @@ namespace DS.SimpleServiceBus.ConsoleApp
         {
             Console.WriteLine("Hello World!");
 
-            var busService = new BusService(cfg =>
+            var busService = BusServiceFactory.CreateUsingRabbitMq(cfg =>
             {
                 cfg.Uri = "rabbitmq://localhost/dsevents";
                 cfg.Username = "guest";
                 cfg.Password = "guest";
             });
+
+            //var busService = new BusService(cfg =>
+            //{
+            //    cfg.Uri = "rabbitmq://localhost/dsevents";
+            //    cfg.Username = "guest";
+            //    cfg.Password = "guest";
+            //});
 
             await busService.StartAsync(CancellationToken.None);
 
