@@ -1,6 +1,6 @@
-﻿using DS.SimpleServiceBus.Events.Interfaces;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using DS.SimpleServiceBus.Events.Interfaces;
 
 namespace DS.SimpleServiceBus.Events
 {

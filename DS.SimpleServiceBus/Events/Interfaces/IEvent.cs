@@ -4,6 +4,5 @@
     /// </summary>
     public interface IEvent
     {
-     
     }
 }

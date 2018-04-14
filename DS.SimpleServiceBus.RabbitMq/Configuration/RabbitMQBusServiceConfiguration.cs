@@ -1,6 +1,6 @@
-﻿using DS.SimpleServiceBus.Configuration.Interfaces;
+﻿using DS.SimpleServiceBus.RabbitMq.Configuration.Interfaces;
 
-namespace DS.SimpleServiceBus.Configuration
+namespace DS.SimpleServiceBus.RabbitMq.Configuration
 {
     public class RabbitMqBusServiceConfiguration : IRabbitMqBusServiceConfiguration
     {

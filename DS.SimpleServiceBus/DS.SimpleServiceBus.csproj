@@ -7,9 +7,9 @@
     <Product>DS.SimpleServiceBus</Product>
     <Authors>Dennis Hogström</Authors>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <AssemblyVersion>1.0.0.5</AssemblyVersion>
-    <FileVersion>1.0.0.5</FileVersion>
-    <Version>1.0.5</Version>
+    <AssemblyVersion>1.0.6.0</AssemblyVersion>
+    <FileVersion>1.0.6.0</FileVersion>
+    <Version>1.0.6</Version>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/dennishog/SimpleServiceBus</RepositoryUrl>
     <PackageTags>Masstransit, RabbitMQ, Servicebus</PackageTags>
@@ -23,7 +23,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit.RabbitMQ" Version="4.0.1" />
     <PackageReference Include="SharpSerializer" Version="3.0.1" />
   </ItemGroup>
 

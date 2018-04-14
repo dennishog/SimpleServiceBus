@@ -1,18 +1,19 @@
-﻿using DS.SimpleServiceBus.Configuration.Interfaces;
+﻿//using DS.SimpleServiceBus.Configuration.Interfaces;
 
-namespace DS.SimpleServiceBus.Configuration
-{
-    public class CommandServiceConfiguration : ICommandServiceConfiguration
-    {
-        public CommandServiceConfiguration()
-        {
-        }
+//namespace DS.SimpleServiceBus.Configuration
+//{
+//    public class CommandServiceConfiguration : ICommandServiceConfiguration
+//    {
+//        public CommandServiceConfiguration()
+//        {
+//        }
 
-        public CommandServiceConfiguration(string commandQueueName)
-        {
-            CommandQueueName = commandQueueName;
-        }
+//        public CommandServiceConfiguration(string commandQueueName)
+//        {
+//            CommandQueueName = commandQueueName;
+//        }
 
-        public string CommandQueueName { get; set; }
-    }
-}
+//        public string CommandQueueName { get; set; }
+//    }
+//}
+

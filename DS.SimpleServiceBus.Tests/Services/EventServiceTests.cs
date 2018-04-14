@@ -1,12 +1,14 @@
-﻿using DS.SimpleServiceBus.Events;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using DS.SimpleServiceBus.Events;
 using DS.SimpleServiceBus.Events.Interfaces;
 using DS.SimpleServiceBus.Extensions;
+using DS.SimpleServiceBus.Factories;
+using DS.SimpleServiceBus.RabbitMq.Extensions;
 using DS.SimpleServiceBus.Services;
 using DS.SimpleServiceBus.Services.Interfaces;
 using DS.SimpleServiceBus.Tests.Fakes;
 using NSubstitute;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace DS.SimpleServiceBus.Tests.Services
@@ -17,7 +19,7 @@ namespace DS.SimpleServiceBus.Tests.Services
         {
             _busService = Substitute.For<IBusService>();
             _eventHandler = Substitute.For<EventHandler<EventFake>>();
-            _systemUnderTest = new EventService(_busService, q => q.EventQueueName = "test");
+            _systemUnderTest = EventServiceFactory.Create.UsingRabbitMq(_busService, q => q.EventQueueName = "test");
         }
 
         private readonly IBusService _busService;

@@ -1,4 +1,6 @@
-﻿namespace DS.SimpleServiceBus.Configuration.Interfaces
+﻿using DS.SimpleServiceBus.Configuration.Interfaces;
+
+namespace DS.SimpleServiceBus.RabbitMq.Configuration.Interfaces
 {
     public interface IRabbitMqBusServiceConfiguration : IBusServiceConfiguration
     {

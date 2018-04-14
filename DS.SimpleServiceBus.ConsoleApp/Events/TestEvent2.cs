@@ -5,6 +5,5 @@ namespace DS.SimpleServiceBus.ConsoleApp.Events
 {
     public class TestEvent2 : Event<TestModel>
     {
-        
     }
 }

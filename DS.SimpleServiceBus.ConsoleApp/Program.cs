@@ -8,7 +8,7 @@ using DS.SimpleServiceBus.ConsoleApp.Events;
 using DS.SimpleServiceBus.ConsoleApp.Events.EventHandlers;
 using DS.SimpleServiceBus.ConsoleApp.Events.Models;
 using DS.SimpleServiceBus.Factories;
-using DS.SimpleServiceBus.Services;
+using DS.SimpleServiceBus.RabbitMq.Extensions;
 
 namespace DS.SimpleServiceBus.ConsoleApp
 {
@@ -23,30 +23,26 @@ namespace DS.SimpleServiceBus.ConsoleApp
         {
             Console.WriteLine("Hello World!");
 
-            var busService = BusServiceFactory.CreateUsingRabbitMq(cfg =>
+            var busService = BusServiceFactory.Create.UsingRabbitMq(cfg =>
             {
                 cfg.Uri = "rabbitmq://localhost/dsevents";
                 cfg.Username = "guest";
                 cfg.Password = "guest";
             });
 
-            //var busService = new BusService(cfg =>
-            //{
-            //    cfg.Uri = "rabbitmq://localhost/dsevents";
-            //    cfg.Username = "guest";
-            //    cfg.Password = "guest";
-            //});
-
             await busService.StartAsync(CancellationToken.None);
 
-            var eventService = new EventService(busService, cfg => cfg.EventQueueName = "ds.events");
+            var eventService =
+                EventServiceFactory.Create.UsingRabbitMq(busService, x => x.EventQueueName = "ds.events");
             eventService.RegisterEventHandler<TestEventListener>();
             eventService.RegisterEventHandler<TestEventListener2>();
 
-            var commandService = new CommandService(busService, cfg => cfg.CommandQueueName = "ds.commands");
+            var commandService =
+                CommandServiceFactory.Create.UsingRabbitMq(busService, x => x.CommandQueueName = "ds.command");
             commandService.RegisterCommandHandler<TestCommandHandler>();
 
-            var commandService2 = new CommandService(busService, cfg => cfg.CommandQueueName = "ds.commands2");
+            var commandService2 =
+                CommandServiceFactory.Create.UsingRabbitMq(busService, x => x.CommandQueueName = "ds.commands2");
             commandService2.RegisterCommandHandler<TestCommandHandler2>();
 
 
@@ -57,7 +53,7 @@ namespace DS.SimpleServiceBus.ConsoleApp
 
             eventService.PublishAsync(new TestEvent2
             {
-                Model = new TestModel { Id = 10, Name = "Andreas" }
+                Model = new TestModel {Id = 10, Name = "Andreas"}
             }, CancellationToken.None).Wait();
 
             var request = new TestRequest {Id = 10};

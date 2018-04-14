@@ -1,18 +1,19 @@
-﻿using DS.SimpleServiceBus.Configuration.Interfaces;
+﻿//using DS.SimpleServiceBus.Configuration.Interfaces;
 
-namespace DS.SimpleServiceBus.Configuration
-{
-    public class EventServiceConfiguration : IEventServiceConfiguration
-    {
-        public EventServiceConfiguration()
-        {
-        }
+//namespace DS.SimpleServiceBus.Configuration
+//{
+//    public class EventServiceConfiguration : IEventServiceConfiguration
+//    {
+//        public EventServiceConfiguration()
+//        {
+//        }
 
-        public EventServiceConfiguration(string eventQueueName)
-        {
-            EventQueueName = eventQueueName;
-        }
+//        public EventServiceConfiguration(string eventQueueName)
+//        {
+//            EventQueueName = eventQueueName;
+//        }
 
-        public string EventQueueName { get; set; }
-    }
-}
+//        public string EventQueueName { get; set; }
+//    }
+//}
+

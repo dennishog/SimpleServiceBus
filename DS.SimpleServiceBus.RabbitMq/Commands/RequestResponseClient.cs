@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using DS.SimpleServiceBus.Commands.Interfaces;
 using MassTransit;
 
-namespace DS.SimpleServiceBus.Commands
+namespace DS.SimpleServiceBus.RabbitMq.Commands
 {
     public class RequestResponseClient : IRequestResponseClient
     {

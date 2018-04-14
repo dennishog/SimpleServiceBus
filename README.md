@@ -1,14 +1,14 @@
 # SimpleServiceBus
 
 ## Install
-Install using nuget DS.SimpleServiceBus
+Install using nuget DS.SimpleServiceBus.RabbitMq
 
 ## Usage
 Install RabbitMQ and use the management gui to create a new virtual host
 
 Create an instance of BusService:
 ```C#
-var busService = BusServiceFactory.CreateUsingRabbitMq(cfg =>
+var busService = BusServiceFactory.Create.UsingRabbitMq(cfg =>
 {
     cfg.Uri = "rabbitmq://localhost/dsevents";
     cfg.Username = "guest";
@@ -28,7 +28,7 @@ await busService.StartAsync(CancellationToken.None);
 
 Create an instance of EventService
 ```C#
-var eventService = new EventService(busService, cfg => cfg.EventQueueName = "thiseventserviceuniquequeuename");
+var eventService = EventServiceFactory.Create.UsingRabbitMq(busService, cfg => cfg.EventQueueName = "thiseventserviceuniquequeuename");
 ```
 
 Register your eventhandler
@@ -48,7 +48,7 @@ await eventService.PublishAsync(InstanceOfYourEventClass, CancellationToken.None
 
 Create an instance of CommandService
 ```C#
-var commandService = new CommandService(busService, cfg => cfg.CommandQueueName = "thiscommandserviceuniquequeuename");
+var commandService = CommandServiceFactory.Create.UsingRabbitMq(busService, cfg => cfg.CommandQueueName = "thiscommandserviceuniquequeuename");
 ```
 
 Register your commandhandler

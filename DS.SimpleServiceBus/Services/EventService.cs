@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DS.SimpleServiceBus.Configuration;
 using DS.SimpleServiceBus.Configuration.Interfaces;
 using DS.SimpleServiceBus.Events;
 using DS.SimpleServiceBus.Events.Interfaces;
@@ -17,7 +16,7 @@ namespace DS.SimpleServiceBus.Services
     ///     Used for sending events and registering EventHandlers. The bus must be created and started before EventService is
     ///     instantiated.
     /// </summary>
-    public class EventService : IEventService
+    public abstract class EventService : IEventService
     {
         private readonly IBusService _busService;
         private readonly IEventServiceConfiguration _configuration;
@@ -28,10 +27,10 @@ namespace DS.SimpleServiceBus.Services
         /// </summary>
         /// <param name="busService">The BusService that this EventService should use</param>
         /// <param name="action">Configuration for the EventService</param>
-        public EventService(IBusService busService, Action<IEventServiceConfiguration> action)
+        protected EventService(IBusService busService, IEventServiceConfiguration action)
         {
             _busService = busService;
-            _configuration = EventServiceConfigurator.Configure(action);
+            _configuration = action;
 
             busService.ConnectHandlerAsync(_configuration.EventQueueName, EventMessageReceived, CancellationToken.None)
                 .Wait();
