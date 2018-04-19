@@ -7,6 +7,7 @@ using DS.SimpleServiceBus.ConsoleApp.Commands.Models.Response;
 using DS.SimpleServiceBus.ConsoleApp.Events;
 using DS.SimpleServiceBus.ConsoleApp.Events.EventHandlers;
 using DS.SimpleServiceBus.ConsoleApp.Events.Models;
+using DS.SimpleServiceBus.EventHubs.Extensions;
 using DS.SimpleServiceBus.Factories;
 using DS.SimpleServiceBus.RabbitMq.Extensions;
 
@@ -23,6 +24,7 @@ namespace DS.SimpleServiceBus.ConsoleApp
         {
             Console.WriteLine("Hello World!");
 
+            #region RabbitMq
             var busService = BusServiceFactory.Create.UsingRabbitMq(cfg =>
             {
                 cfg.Uri = "rabbitmq://localhost/dsevents";
@@ -48,15 +50,15 @@ namespace DS.SimpleServiceBus.ConsoleApp
 
             await eventService.PublishAsync(new TestEvent
             {
-                Model = new TestModel {Id = 10, Name = "Dennis"}
+                Model = new TestModel { Id = 10, Name = "Dennis" }
             }, CancellationToken.None);
 
             eventService.PublishAsync(new TestEvent2
             {
-                Model = new TestModel {Id = 10, Name = "Andreas"}
+                Model = new TestModel { Id = 10, Name = "Andreas" }
             }, CancellationToken.None).Wait();
 
-            var request = new TestRequest {Id = 10};
+            var request = new TestRequest { Id = 10 };
             for (var i = 0; i < 20; i++)
             {
                 var response =
@@ -73,6 +75,9 @@ namespace DS.SimpleServiceBus.ConsoleApp
             await commandService.StopAsync(CancellationToken.None);
             await commandService2.StopAsync(CancellationToken.None);
             await eventService.StopAsync(CancellationToken.None);
+            #endregion
+
+
 
             Console.ReadLine();
         }

@@ -2,7 +2,7 @@
 
 namespace DS.SimpleServiceBus.RabbitMq.Services.Interfaces
 {
-    public interface IRabbitMqBusService : IBusService
+    internal interface IRabbitMqBusService : IBusService
     {
     }
 }

@@ -10,12 +10,12 @@
     <PackageProjectUrl>https://github.com/dennishog/SimpleServiceBus</PackageProjectUrl>
     <RepositoryUrl>https://github.com/dennishog/SimpleServiceBus</RepositoryUrl>
     <Version>1.0.7</Version>
-    <AssemblyVersion>1.0.7.0</AssemblyVersion>
-    <Description>Package for adding RabbitMq communication through SimpleServiceBus</Description>
+    <Description>Package for adding EventHubs communication through SimpleServiceBus</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit.RabbitMQ" Version="4.0.1" />
+    <PackageReference Include="Microsoft.Azure.EventHubs" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Azure.EventHubs.Processor" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>

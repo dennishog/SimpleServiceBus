@@ -11,3 +11,7 @@
 /DS.SimpleServiceBus.Tests/obj
 /DS.SimpleServiceBus.RabbitMq/bin/Release/netstandard2.0
 /DS.SimpleServiceBus.RabbitMq/obj
+/DS.SimpleServiceBus.EventHubs/bin/Release/netstandard2.0
+/DS.SimpleServiceBus.EventHubs/obj
+/DS.SimpleServiceBus.EventHubs/bin/Release
+*.nupkg

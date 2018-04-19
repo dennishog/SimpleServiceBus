@@ -15,7 +15,7 @@ using ICommandService = DS.SimpleServiceBus.Services.Interfaces.ICommandService;
 
 namespace DS.SimpleServiceBus.RabbitMq.Services
 {
-    public class RabbitMqBusService : BusService, IRabbitMqBusService
+    internal class RabbitMqBusService : BusService, IRabbitMqBusService
     {
         private readonly IBusControl _bus;
         private readonly Dictionary<string, HostReceiveEndpointHandle> _handles;

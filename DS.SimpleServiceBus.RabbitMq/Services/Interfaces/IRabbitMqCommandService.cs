@@ -3,7 +3,7 @@ using MassTransit;
 
 namespace DS.SimpleServiceBus.RabbitMq.Services.Interfaces
 {
-    public interface IRabbitMqCommandService : SimpleServiceBus.Services.Interfaces.ICommandService, IConsumer<ICommandMessage>
+    internal interface IRabbitMqCommandService : IConsumer<ICommandMessage>
     {
     }
 }

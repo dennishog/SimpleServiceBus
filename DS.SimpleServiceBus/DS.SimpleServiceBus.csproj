@@ -7,15 +7,15 @@
     <Product>DS.SimpleServiceBus</Product>
     <Authors>Dennis Hogström</Authors>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <AssemblyVersion>1.0.6.0</AssemblyVersion>
-    <FileVersion>1.0.6.0</FileVersion>
-    <Version>1.0.6</Version>
+    <AssemblyVersion>1.0.7.0</AssemblyVersion>
+    <FileVersion>1.0.7.0</FileVersion>
+    <Version>1.0.7</Version>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/dennishog/SimpleServiceBus</RepositoryUrl>
-    <PackageTags>Masstransit, RabbitMQ, Servicebus</PackageTags>
-    <Description>Add message-based communication to your application easily using RabbitMQ.</Description>
+    <PackageTags>Masstransit, RabbitMQ, EventHubs, Servicebus</PackageTags>
+    <Description>Add message-based communication to your application easily using message brokers.</Description>
     <PackageProjectUrl>https://github.com/dennishog/SimpleServiceBus</PackageProjectUrl>
-    <PackageReleaseNotes>IBusService is now created using factory to be able to support other buses in the future.</PackageReleaseNotes>
+    <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

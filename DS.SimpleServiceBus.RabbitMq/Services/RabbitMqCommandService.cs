@@ -11,7 +11,7 @@ using IRabbitMqCommandService = DS.SimpleServiceBus.RabbitMq.Services.Interfaces
 
 namespace DS.SimpleServiceBus.RabbitMq.Services
 {
-    public class RabbitMqCommandService : SimpleServiceBus.Services.CommandService, IRabbitMqCommandService
+    internal class RabbitMqCommandService : SimpleServiceBus.Services.CommandService, IRabbitMqCommandService
     {
         public RabbitMqCommandService(IBusService busService, IRabbitMqCommandServiceConfiguration config) : base(busService,
             config)
