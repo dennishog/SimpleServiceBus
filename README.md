@@ -1,11 +1,12 @@
 # SimpleServiceBus
 
-## Install
-Install using nuget DS.SimpleServiceBus.RabbitMq
+## RabbitMq
 
-## Usage
+### Installation
+Install using nuget DS.SimpleServiceBus.RabbitMq
 Install RabbitMQ and use the management gui to create a new virtual host
 
+### Usage
 Create an instance of BusService:
 ```C#
 var busService = BusServiceFactory.Create.UsingRabbitMq(cfg =>
@@ -13,6 +14,30 @@ var busService = BusServiceFactory.Create.UsingRabbitMq(cfg =>
     cfg.Uri = "rabbitmq://localhost/dsevents";
     cfg.Username = "guest";
     cfg.Password = "guest";
+});
+```
+
+Start the Bus
+```C#
+await busService.StartAsync(CancellationToken.None);
+```
+
+## EventHubs
+
+### Installation
+Install using nuget DS.SimpleServiceBus.EventHubs
+Go to Azure portal and create a new EventHub and a storage account.
+
+### Usage
+Create an instance of BusService:
+```C#
+var eventHubsBusService = BusServiceFactory.Create.UsingEventHubs(x =>
+            {
+    x.ConsumerGroup = "{YourConsumerGroupName}";
+    x.EventHubConnectionString = "{YourEventHubCS}";
+    x.EventHubName = "{TheNameOfYourEventHub}";
+    x.StorageConnectionString = "{YourStorageCS}";
+    x.StorageAccountName = "{YourStorageAccountName}";
 });
 ```
 
@@ -41,7 +66,7 @@ Publish an event
 await eventService.PublishAsync(InstanceOfYourEventClass, CancellationToken.None);
 ```
 
-## Commands
+## Commands (not available for EventHubs)
 - Create a class implementing the IRequestModel interface
 - Create a class implementing the IResponseModel interface
 - Create a commandhandler implementing the ICommandHandler<TRequestModel, TResponseModel> using your newly created classes
