@@ -1,0 +1,484 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DS.SimpleServiceBus</name>
+    </assembly>
+    <members>
+        <member name="T:DS.SimpleServiceBus.Commands.CommandHandler`2">
+            <summary>
+                Abstract class used for implementing a CommandHandler
+            </summary>
+            <typeparam name="TRequest">Type implementing IRequestModel</typeparam>
+            <typeparam name="TResponse">Type implementing IResponseModel</typeparam>
+        </member>
+        <member name="P:DS.SimpleServiceBus.Commands.CommandHandler`2.ExpectedRequestType">
+            <summary>
+                Used internally for finding the correct CommandHandler
+            </summary>
+        </member>
+        <member name="P:DS.SimpleServiceBus.Commands.CommandHandler`2.ExpectedResponseType">
+            <summary>
+                Used internally for finding the correct CommandHandler
+            </summary>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Commands.CommandHandler`2.ExecuteInternalAsync(DS.SimpleServiceBus.Commands.Interfaces.IRequestModel,System.Threading.CancellationToken)">
+            <summary>
+                Execution of CommandHandlers are internally executed through this method
+            </summary>
+            <param name="requestModel"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Commands.CommandHandler`2.ExecuteAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+                Implemented by CommandHandlers in order for the CommandHandlers to get a method with the correct types
+            </summary>
+            <param name="requestModel"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DS.SimpleServiceBus.Commands.CommandMessage">
+            <summary>
+                Internal class used for sending request/response through the broker
+            </summary>
+        </member>
+        <member name="P:DS.SimpleServiceBus.Commands.CommandMessage.RequestData">
+            <summary>
+                The serialized IRequestModel
+            </summary>
+        </member>
+        <member name="P:DS.SimpleServiceBus.Commands.CommandMessage.ResponseData">
+            <summary>
+                The serialized IResponseModel
+            </summary>
+        </member>
+        <member name="P:DS.SimpleServiceBus.Commands.CommandMessage.ExpectedRequestType">
+            <summary>
+                The type of the implementation of IRequestModel
+            </summary>
+        </member>
+        <member name="P:DS.SimpleServiceBus.Commands.CommandMessage.ExpectedResponseType">
+            <summary>
+                The type of the implementation of IResponseModel
+            </summary>
+        </member>
+        <member name="T:DS.SimpleServiceBus.Events.Event`1">
+            <inheritdoc />
+            <summary>
+                Abstract class used for implementing an event.
+            </summary>
+            <typeparam name="TModel">Class implementing IModel</typeparam>
+        </member>
+        <member name="P:DS.SimpleServiceBus.Events.Event`1.Model">
+            <summary>
+                The model to use for this event
+            </summary>
+        </member>
+        <member name="T:DS.SimpleServiceBus.Events.EventHandler`1">
+            <summary>
+                Abstract class for implementing an EventHandler for Event T
+            </summary>
+            <typeparam name="TEvent">Class implementing IEvent</typeparam>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Events.EventHandler`1.ExecuteInternalAsync(DS.SimpleServiceBus.Events.Interfaces.IEvent,System.Threading.CancellationToken)">
+            <summary>
+                When eventhandlers are executed they are executed through this method.
+            </summary>
+            <param name="event">Instance of class implementing IEvent</param>
+            <param name="cancellationToken">CancellationToken</param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Events.EventHandler`1.ExecuteAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+                This is the method that needs to be implemented by the EventHandlers.
+                This is called from the ExecuteInternalAsync and this is to be able to provide
+                a method which already has the event of the correct type.
+            </summary>
+            <param name="event"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DS.SimpleServiceBus.Events.EventMessage">
+            <summary>
+                Internal messaging class, used when sending messages through the broker
+            </summary>
+        </member>
+        <member name="P:DS.SimpleServiceBus.Events.EventMessage.Event">
+            <summary>
+                The event as a byte[]
+            </summary>
+        </member>
+        <member name="T:DS.SimpleServiceBus.Events.Interfaces.IEvent">
+            <summary>
+            </summary>
+        </member>
+        <member name="T:DS.SimpleServiceBus.Extensions.SerializationExtension">
+            <summary>
+                Extension methods to simplify serialization/deserialization for objects being transferred by the bus
+            </summary>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Extensions.SerializationExtension.GetEvent(System.Byte[])">
+            <summary>
+                Deserializes event
+            </summary>
+            <param name="eventData">IEvent implementation as byte[]</param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Extensions.SerializationExtension.GetResponse(System.Byte[])">
+            <summary>
+                Deserializes responsemodel
+            </summary>
+            <param name="responseData">IResponseModel implementation as byte[]</param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Extensions.SerializationExtension.GetRequest(System.Byte[])">
+            <summary>
+                Deserializes requestmodel
+            </summary>
+            <param name="requestData">IRequestModel implementation as byte[]</param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Extensions.SerializationExtension.ToBytes(DS.SimpleServiceBus.Events.Interfaces.IEvent)">
+            <summary>
+                Serializes event
+            </summary>
+            <param name="event">Instance of class implementing IEvent</param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Extensions.SerializationExtension.ToBytes(DS.SimpleServiceBus.Commands.Interfaces.IRequestModel)">
+            <summary>
+                Serializes requestmodel
+            </summary>
+            <param name="requestModel">Instance of class implementing IRequestModel</param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Extensions.SerializationExtension.ToBytes(DS.SimpleServiceBus.Commands.Interfaces.IResponseModel)">
+            <summary>
+                Serializes responsemodel
+            </summary>
+            <param name="responseModel">Instance of class implementing IResponseModel</param>
+            <returns></returns>
+        </member>
+        <member name="T:DS.SimpleServiceBus.Factories.BusServiceFactory">
+            <summary>
+                Factory class for creating IBusService
+            </summary>
+        </member>
+        <member name="P:DS.SimpleServiceBus.Factories.BusServiceFactory.Create">
+            <summary>
+                Instance for accessing extension methods
+            </summary>
+        </member>
+        <member name="T:DS.SimpleServiceBus.Factories.BusServiceFactoryExtensionHook">
+            <summary>
+                Used by different broker implementations through extension methods
+            </summary>
+        </member>
+        <member name="T:DS.SimpleServiceBus.Factories.CommandServiceFactory">
+            <summary>
+                Factory class for creating ICommandService
+            </summary>
+        </member>
+        <member name="P:DS.SimpleServiceBus.Factories.CommandServiceFactory.Create">
+            <summary>
+                Instance for accessing extension methods
+            </summary>
+        </member>
+        <member name="T:DS.SimpleServiceBus.Factories.CommandServiceFactoryExtensionHook">
+            <summary>
+                Used by different broker implementations through extension methods
+            </summary>
+        </member>
+        <member name="T:DS.SimpleServiceBus.Factories.EventServiceFactory">
+            <summary>
+                Factory class for creating IEventService
+            </summary>
+        </member>
+        <member name="P:DS.SimpleServiceBus.Factories.EventServiceFactory.Create">
+            <summary>
+                Instance for accessing extension methods
+            </summary>
+        </member>
+        <member name="T:DS.SimpleServiceBus.Factories.EventServiceFactoryExtensionHook">
+            <summary>
+                Used by different broker implementations through extension methods
+            </summary>
+        </member>
+        <member name="T:DS.SimpleServiceBus.Services.BusService">
+            <summary>
+                Abstract class used for implementing a busservice
+            </summary>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.BusService.StartAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.BusService.StopAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.BusService.ConnectConsumerAsync(System.String,DS.SimpleServiceBus.Services.Interfaces.ICommandService,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.BusService.DisconnectConsumerAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.BusService.ConnectHandlerAsync(System.String,System.Func{DS.SimpleServiceBus.Events.Interfaces.IEventMessage,System.Threading.CancellationToken,System.Threading.Tasks.Task},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.BusService.DisconnectHandlerAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.BusService.CreateRequestClientAsync(System.String,System.TimeSpan,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.BusService.Request(System.String,DS.SimpleServiceBus.Commands.Interfaces.ICommandMessage,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.BusService.PublishAsync``1(``0,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:DS.SimpleServiceBus.Services.CommandService">
+            <summary>
+                Used for sending and receiving request/response and registering CommandHandlers. The bus must be created and
+                started before CommandService is instantiated.
+            </summary>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.CommandService.#ctor(DS.SimpleServiceBus.Services.Interfaces.IBusService,DS.SimpleServiceBus.Configuration.Interfaces.ICommandServiceConfiguration)">
+            <summary>
+                Connects a new ReceieveEndpoint to the BusService with queuename according to configuration
+            </summary>
+            <param name="busService"></param>
+            <param name="action"></param>
+        </member>
+        <member name="P:DS.SimpleServiceBus.Services.CommandService.CommandHandlers">
+            <summary>
+                Collection of registered CommandHandlers
+            </summary>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.CommandService.RegisterCommandHandler``1">
+            <inheritdoc />
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.CommandService.RegisterCommandHandler(DS.SimpleServiceBus.Commands.Interfaces.ICommandHandler)">
+            <inheritdoc />
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.CommandService.SendRequestAsync``2(``0,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.CommandService.StopAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:DS.SimpleServiceBus.Services.EventService">
+            <summary>
+                Used for sending events and registering EventHandlers. The bus must be created and started before EventService is
+                instantiated.
+            </summary>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.EventService.#ctor(DS.SimpleServiceBus.Services.Interfaces.IBusService,DS.SimpleServiceBus.Configuration.Interfaces.IEventServiceConfiguration)">
+            <summary>
+                Connects a new ReceieveEndpoint to the BusService with queuename according to configuration
+            </summary>
+            <param name="busService">The BusService that this EventService should use</param>
+            <param name="action">Configuration for the EventService</param>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.EventService.PublishAsync(DS.SimpleServiceBus.Events.Interfaces.IEvent,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.EventService.RegisterEventHandler``1">
+            <inheritdoc />
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.EventService.RegisterEventHandler(DS.SimpleServiceBus.Events.Interfaces.IEventHandler)">
+            <inheritdoc />
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.EventService.EventMessageReceived(DS.SimpleServiceBus.Events.Interfaces.IEventMessage,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.EventService.StopAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.IBusService.StartAsync(System.Threading.CancellationToken)">
+            <summary>
+                Starts the bus
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.IBusService.StopAsync(System.Threading.CancellationToken)">
+            <summary>
+                Stops the bus
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.IBusService.ConnectConsumerAsync(System.String,DS.SimpleServiceBus.Services.Interfaces.ICommandService,System.Threading.CancellationToken)">
+            <summary>
+                Connects a consumer used for request/response
+            </summary>
+            <param name="queueName"></param>
+            <param name="commandService"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.IBusService.DisconnectConsumerAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+                Disconnects a consumer used for request/response
+            </summary>
+            <param name="queueName"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.IBusService.ConnectHandlerAsync(System.String,System.Func{DS.SimpleServiceBus.Events.Interfaces.IEventMessage,System.Threading.CancellationToken,System.Threading.Tasks.Task},System.Threading.CancellationToken)">
+            <summary>
+                Connects an eventhandler used for receiving events
+            </summary>
+            <param name="queueName"></param>
+            <param name="messageReceived"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.IBusService.DisconnectHandlerAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+                Disconnects an eventhandler used for receiving events
+            </summary>
+            <param name="queueName"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.IBusService.CreateRequestClientAsync(System.String,System.TimeSpan,System.Threading.CancellationToken)">
+            <summary>
+                Create a request client used for request/response
+            </summary>
+            <param name="queueName"></param>
+            <param name="timeout"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.IBusService.Request(System.String,DS.SimpleServiceBus.Commands.Interfaces.ICommandMessage,System.Threading.CancellationToken)">
+            <summary>
+                Sends a request
+            </summary>
+            <param name="queueName"></param>
+            <param name="request"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.IBusService.PublishAsync``1(``0,System.Threading.CancellationToken)">
+            <summary>
+                Publishes an event
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="message"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DS.SimpleServiceBus.Services.Interfaces.ICommandService">
+            <summary>
+                Should only be implemented by CommandService. Inherit abstract class CommandService to build a new CommandService.
+            </summary>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.ICommandService.RegisterCommandHandler``1">
+            <summary>
+                Adds a CommandHandler
+            </summary>
+            <typeparam name="T">Type implementing ICommandHandker</typeparam>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.ICommandService.RegisterCommandHandler(DS.SimpleServiceBus.Commands.Interfaces.ICommandHandler)">
+            <summary>
+                Adds a CommandHandler
+            </summary>
+            <param name="commandHandler">Instance of class implementing CommandHandler</param>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.ICommandService.SendRequestAsync``2(``0,System.Threading.CancellationToken)">
+            <summary>
+                Sends a request through the IBusService and returns the response
+            </summary>
+            <typeparam name="TRequest">Type implementing IRequestModel</typeparam>
+            <typeparam name="TResponse">Type implementing IResponseModel</typeparam>
+            <param name="requestModel">Instance of class implementing IRequestModel</param>
+            <param name="cancellationToken">CancellationToken</param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.ICommandService.StopAsync(System.Threading.CancellationToken)">
+            <summary>
+                Disconnects CommandService from IBusService
+            </summary>
+            <param name="cancellationToken">CancellationToken</param>
+            <returns></returns>
+        </member>
+        <member name="T:DS.SimpleServiceBus.Services.Interfaces.IEventService">
+            <summary>
+                Should only be implemented by EventService. Inherit abstract class EventService to build a new EventService.
+            </summary>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.IEventService.PublishAsync(DS.SimpleServiceBus.Events.Interfaces.IEvent,System.Threading.CancellationToken)">
+            <summary>
+                Publishes an event
+            </summary>
+            <param name="event"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.IEventService.RegisterEventHandler``1">
+            <summary>
+                Adds an EventHandler
+            </summary>
+            <typeparam name="T">Accepts a class implementing IEventHandler</typeparam>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.IEventService.RegisterEventHandler(DS.SimpleServiceBus.Events.Interfaces.IEventHandler)">
+            <summary>
+                Adds an EventHandler
+            </summary>
+            <param name="eventHandler">Instance of class implementing IEventHandler</param>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.IEventService.EventMessageReceived(DS.SimpleServiceBus.Events.Interfaces.IEventMessage,System.Threading.CancellationToken)">
+            <summary>
+                When message is received from the broker, this method executes all EventHandlers
+                built to handle this type of Event.
+            </summary>
+            <param name="eventMessage">The message received from the broker</param>
+            <param name="cancellationToken">CancellationToken</param>
+            <returns></returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Services.Interfaces.IEventService.StopAsync(System.Threading.CancellationToken)">
+            <summary>
+                Disconnects this service from the IServiceBus instance
+            </summary>
+            <param name="cancellationToken">CancellationToken</param>
+            <returns></returns>
+        </member>
+        <member name="T:DS.SimpleServiceBus.Utils.GenericSerializer">
+            <summary>
+                Using SharpSerializer to Serialize/Deserialize without the need for Serializable attribute.
+                Also uses compression to minimize the data used in the transfer.
+            </summary>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Utils.GenericSerializer.Serialize``1(``0)">
+            <summary>
+                Serializes T and compresses the data
+            </summary>
+            <typeparam name="T">Generic type</typeparam>
+            <param name="obj">Instance of T</param>
+            <returns>Compressed byte[]</returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Utils.GenericSerializer.DeSerialize``1(System.Byte[])">
+            <summary>
+                Decompresses byte[] and deserializes T
+            </summary>
+            <typeparam name="T">Generic type</typeparam>
+            <param name="arrBytes">Instance of T as byte[]</param>
+            <returns>Instance of T</returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Utils.GenericSerializer.Compress(System.Byte[])">
+            <summary>
+                Compresses byte[] using GZip
+            </summary>
+            <param name="input">byte[]</param>
+            <returns>byte[]</returns>
+        </member>
+        <member name="M:DS.SimpleServiceBus.Utils.GenericSerializer.Decompress(System.Byte[])">
+            <summary>
+                Decompresses byte[] using GZip
+            </summary>
+            <param name="input">byte[]</param>
+            <returns>byte[]</returns>
+        </member>
+    </members>
+</doc>

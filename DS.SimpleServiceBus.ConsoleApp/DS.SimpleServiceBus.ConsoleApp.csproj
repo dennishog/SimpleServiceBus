@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DS.SimpleServiceBus.EventHubs\DS.SimpleServiceBus.EventHubs.csproj" />
+    <ProjectReference Include="..\DS.SimpleServiceBus.InMemory\DS.SimpleServiceBus.InMemory.csproj" />
     <ProjectReference Include="..\DS.SimpleServiceBus.RabbitMq\DS.SimpleServiceBus.RabbitMq.csproj" />
     <ProjectReference Include="..\DS.SimpleServiceBus\DS.SimpleServiceBus.csproj" />
   </ItemGroup>

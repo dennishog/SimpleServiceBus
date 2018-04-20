@@ -8,7 +8,7 @@ using DS.SimpleServiceBus.ConsoleApp.Events;
 using DS.SimpleServiceBus.ConsoleApp.Events.EventHandlers;
 using DS.SimpleServiceBus.ConsoleApp.Events.Models;
 using DS.SimpleServiceBus.Factories;
-using DS.SimpleServiceBus.RabbitMq.Extensions;
+using DS.SimpleServiceBus.InMemory.Extensions;
 
 namespace DS.SimpleServiceBus.ConsoleApp
 {
@@ -25,26 +25,28 @@ namespace DS.SimpleServiceBus.ConsoleApp
 
             #region RabbitMq
 
-            var busService = BusServiceFactory.Create.UsingRabbitMq(cfg =>
-            {
-                cfg.Uri = "rabbitmq://localhost/dsevents";
-                cfg.Username = "guest";
-                cfg.Password = "guest";
-            });
+            //var busService = BusServiceFactory.Create.UsingRabbitMq(cfg =>
+            //{
+            //    cfg.Uri = "rabbitmq://localhost/dsevents";
+            //    cfg.Username = "guest";
+            //    cfg.Password = "guest";
+            //});
+
+            var busService = BusServiceFactory.Create.UsingInMemory(cfg => { });
 
             await busService.StartAsync(CancellationToken.None);
 
             var eventService =
-                EventServiceFactory.Create.UsingRabbitMq(busService, x => x.EventQueueName = "ds.events");
+                EventServiceFactory.Create.UsingInMemory(busService, x => x.EventQueueName = "ds.events");
             eventService.RegisterEventHandler<TestEventListener>();
             eventService.RegisterEventHandler<TestEventListener2>();
 
             var commandService =
-                CommandServiceFactory.Create.UsingRabbitMq(busService, x => x.CommandQueueName = "ds.command");
+                CommandServiceFactory.Create.UsingInMemory(busService, x => x.CommandQueueName = "ds.command");
             commandService.RegisterCommandHandler<TestCommandHandler>();
 
             var commandService2 =
-                CommandServiceFactory.Create.UsingRabbitMq(busService, x => x.CommandQueueName = "ds.commands2");
+                CommandServiceFactory.Create.UsingInMemory(busService, x => x.CommandQueueName = "ds.commands2");
             commandService2.RegisterCommandHandler<TestCommandHandler2>();
 
 

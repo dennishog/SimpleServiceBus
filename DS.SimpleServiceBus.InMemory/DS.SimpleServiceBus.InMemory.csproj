@@ -6,17 +6,12 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Authors>Dennis Hogström</Authors>
     <Company>Dennis Software</Company>
+    <Description>Package for adding in-memory communication through SimpleServiceBus</Description>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/dennishog/SimpleServiceBus</PackageProjectUrl>
     <RepositoryUrl>https://github.com/dennishog/SimpleServiceBus</RepositoryUrl>
     <Version>1.0.8</Version>
-    <Description>Package for adding EventHubs communication through SimpleServiceBus</Description>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.EventHubs" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Azure.EventHubs.Processor" Version="2.0.1" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DS.SimpleServiceBus\DS.SimpleServiceBus.csproj" />

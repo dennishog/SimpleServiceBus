@@ -17,3 +17,5 @@
 *.nupkg
 /DS.SimpleServiceBus.RabbitMq/bin/Debug/netstandard2.0
 /DS.SimpleServiceBus.EventHubs/bin/Debug/netstandard2.0
+/DS.SimpleServiceBus.InMemory/bin/Debug/netstandard2.0
+/DS.SimpleServiceBus.InMemory/obj
