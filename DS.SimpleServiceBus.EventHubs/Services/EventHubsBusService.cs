@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DS.SimpleServiceBus.Commands.Interfaces;
@@ -17,8 +16,8 @@ namespace DS.SimpleServiceBus.EventHubs.Services
     public class EventHubsBusService : BusService, IEventHubsBusService
     {
         private readonly IEventHubsBusServiceConfiguration _configuration;
-        private EventProcessorHost _eventHost;
         private readonly Dictionary<string, AzureEventHubProcessorFactory> _eventProcessors;
+        private EventProcessorHost _eventHost;
         private Lazy<EventHubClient> _eventHubClient;
 
         public EventHubsBusService(IEventHubsBusServiceConfiguration configuration)
@@ -38,21 +37,26 @@ namespace DS.SimpleServiceBus.EventHubs.Services
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            var eventProcessorHostName = Guid.NewGuid().ToString();
-
-            _eventHost = new EventProcessorHost(
-                eventProcessorHostName,
-                _configuration.EventHubName,
-                _configuration.ConsumerGroup,
-                _configuration.EventHubConnectionString,
-                _configuration.StorageConnectionString,
-                _configuration.StorageAccountName);
-
-            EventHubsConnectionStringBuilder connectionStringBuilder = new EventHubsConnectionStringBuilder(_configuration.EventHubConnectionString)
+            await Task.Run(() =>
             {
-                EntityPath = _configuration.EventHubName
-            };
-            _eventHubClient = new Lazy<EventHubClient>(() => EventHubClient.CreateFromConnectionString(connectionStringBuilder.ToString()));
+                var eventProcessorHostName = Guid.NewGuid().ToString();
+
+                _eventHost = new EventProcessorHost(
+                    eventProcessorHostName,
+                    _configuration.EventHubName,
+                    _configuration.ConsumerGroup,
+                    _configuration.EventHubConnectionString,
+                    _configuration.StorageConnectionString,
+                    _configuration.StorageAccountName);
+
+                var connectionStringBuilder =
+                    new EventHubsConnectionStringBuilder(_configuration.EventHubConnectionString)
+                    {
+                        EntityPath = _configuration.EventHubName
+                    };
+                _eventHubClient = new Lazy<EventHubClient>(() =>
+                    EventHubClient.CreateFromConnectionString(connectionStringBuilder.ToString()));
+            }, cancellationToken);
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)
@@ -62,19 +66,20 @@ namespace DS.SimpleServiceBus.EventHubs.Services
         }
 
         /// <summary>
-        /// Not used for eventhubs
+        ///     Not used for eventhubs
         /// </summary>
         /// <param name="queueName"></param>
         /// <param name="commandService"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public override Task ConnectConsumerAsync(string queueName, ICommandService commandService, CancellationToken cancellationToken)
+        public override Task ConnectConsumerAsync(string queueName, ICommandService commandService,
+            CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Not used for eventhubs
+        ///     Not used for eventhubs
         /// </summary>
         /// <param name="queueName"></param>
         /// <param name="cancellationToken"></param>
@@ -84,41 +89,43 @@ namespace DS.SimpleServiceBus.EventHubs.Services
             throw new NotImplementedException();
         }
 
-        public override async Task ConnectHandlerAsync(string queueName, Func<IEventMessage, CancellationToken, Task> messageReceived, CancellationToken cancellationToken)
+        public override async Task ConnectHandlerAsync(string queueName,
+            Func<IEventMessage, CancellationToken, Task> messageReceived, CancellationToken cancellationToken)
         {
             _eventProcessors.Add(queueName, new AzureEventHubProcessorFactory(messageReceived, cancellationToken));
-            
-            await _eventHost.RegisterEventProcessorFactoryAsync(new AzureEventHubProcessorFactory(messageReceived, cancellationToken), EventProcessorOptions.DefaultOptions);
+
+            await _eventHost.RegisterEventProcessorFactoryAsync(
+                new AzureEventHubProcessorFactory(messageReceived, cancellationToken),
+                EventProcessorOptions.DefaultOptions);
         }
 
         public override async Task DisconnectHandlerAsync(string queueName, CancellationToken cancellationToken)
         {
-            await Task.Run(() =>
-            {
-                _eventProcessors.Remove(queueName);
-            }, cancellationToken);
+            await Task.Run(() => { _eventProcessors.Remove(queueName); }, cancellationToken);
         }
 
         /// <summary>
-        /// Not used for eventhubs
+        ///     Not used for eventhubs
         /// </summary>
         /// <param name="queueName"></param>
         /// <param name="timeout"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public override Task CreateRequestClientAsync(string queueName, TimeSpan timeout, CancellationToken cancellationToken)
+        public override Task CreateRequestClientAsync(string queueName, TimeSpan timeout,
+            CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Not used for eventhubs
+        ///     Not used for eventhubs
         /// </summary>
         /// <param name="queueName"></param>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public override Task<ICommandMessage> Request(string queueName, ICommandMessage request, CancellationToken cancellationToken)
+        public override Task<ICommandMessage> Request(string queueName, ICommandMessage request,
+            CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

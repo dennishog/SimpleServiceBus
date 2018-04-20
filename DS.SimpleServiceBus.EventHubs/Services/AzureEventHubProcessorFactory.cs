@@ -1,8 +1,8 @@
-﻿using DS.SimpleServiceBus.Events.Interfaces;
-using Microsoft.Azure.EventHubs.Processor;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using DS.SimpleServiceBus.Events.Interfaces;
+using Microsoft.Azure.EventHubs.Processor;
 
 namespace DS.SimpleServiceBus.EventHubs.Services
 {
@@ -11,7 +11,8 @@ namespace DS.SimpleServiceBus.EventHubs.Services
         private readonly CancellationToken _cancellationToken;
         private readonly Func<IEventMessage, CancellationToken, Task> _onMessage;
 
-        public AzureEventHubProcessorFactory(Func<IEventMessage, CancellationToken, Task> onMessage, CancellationToken cancellationToken)
+        public AzureEventHubProcessorFactory(Func<IEventMessage, CancellationToken, Task> onMessage,
+            CancellationToken cancellationToken)
         {
             _cancellationToken = cancellationToken;
             _onMessage = onMessage;

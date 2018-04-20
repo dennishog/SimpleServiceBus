@@ -5,13 +5,12 @@ using DS.SimpleServiceBus.Events.Interfaces;
 using DS.SimpleServiceBus.Extensions;
 using DS.SimpleServiceBus.Factories;
 using DS.SimpleServiceBus.RabbitMq.Extensions;
-using DS.SimpleServiceBus.Services;
 using DS.SimpleServiceBus.Services.Interfaces;
 using DS.SimpleServiceBus.Tests.Fakes;
 using NSubstitute;
 using Xunit;
 
-namespace DS.SimpleServiceBus.Tests.Services
+namespace DS.SimpleServiceBus.Tests.RabbitMq.Services
 {
     public class EventServiceTests
     {

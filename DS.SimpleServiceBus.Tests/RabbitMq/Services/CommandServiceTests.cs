@@ -1,4 +1,6 @@
-﻿using DS.SimpleServiceBus.Commands.Interfaces;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using DS.SimpleServiceBus.Commands.Interfaces;
 using DS.SimpleServiceBus.Exceptions;
 using DS.SimpleServiceBus.Factories;
 using DS.SimpleServiceBus.RabbitMq.Extensions;
@@ -6,18 +8,17 @@ using DS.SimpleServiceBus.Services.Interfaces;
 using DS.SimpleServiceBus.Tests.Fakes;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace DS.SimpleServiceBus.Tests.Services
+namespace DS.SimpleServiceBus.Tests.RabbitMq.Services
 {
     public class CommandServiceTests
     {
         public CommandServiceTests()
         {
             _busService = Substitute.For<IBusService>();
-            _systemUnderTest = CommandServiceFactory.Create.UsingRabbitMq(_busService, q => q.CommandQueueName = "test");
+            _systemUnderTest =
+                CommandServiceFactory.Create.UsingRabbitMq(_busService, q => q.CommandQueueName = "test");
         }
 
         private readonly IBusService _busService;

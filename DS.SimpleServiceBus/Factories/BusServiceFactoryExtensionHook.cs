@@ -2,6 +2,9 @@
 
 namespace DS.SimpleServiceBus.Factories
 {
+    /// <summary>
+    ///     Used by different broker implementations through extension methods
+    /// </summary>
     public class BusServiceFactoryExtensionHook : IBusServiceFactoryExtensionHook
     {
     }

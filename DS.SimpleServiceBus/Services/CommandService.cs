@@ -37,18 +37,24 @@ namespace DS.SimpleServiceBus.Services
             CommandHandlers = new List<ICommandHandler>();
         }
 
+        /// <summary>
+        ///     Collection of registered CommandHandlers
+        /// </summary>
         public ICollection<ICommandHandler> CommandHandlers { get; }
 
+        /// <inheritdoc />
         public void RegisterCommandHandler<T>() where T : ICommandHandler
         {
             CommandHandlers.Add(Activator.CreateInstance<T>());
         }
 
+        /// <inheritdoc />
         public void RegisterCommandHandler(ICommandHandler commandHandler)
         {
             CommandHandlers.Add(commandHandler);
         }
 
+        /// <inheritdoc />
         public async Task<TResponse> SendRequestAsync<TRequest, TResponse>(TRequest requestModel,
             CancellationToken cancellationToken) where TRequest : IRequestModel where TResponse : IResponseModel
         {
@@ -59,10 +65,10 @@ namespace DS.SimpleServiceBus.Services
                 ExpectedResponseType = typeof(TResponse)
             }, cancellationToken);
 
-            return response.ResponseData.GetResponse<TResponse>();
+            return (TResponse) response.ResponseData.GetResponse();
         }
 
-
+        /// <inheritdoc />
         public async Task StopAsync(CancellationToken cancellationToken)
         {
             await _busService.DisconnectConsumerAsync(_configuration.CommandQueueName, cancellationToken);

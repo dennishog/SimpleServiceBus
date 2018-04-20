@@ -5,15 +5,17 @@ using DS.SimpleServiceBus.Commands;
 using DS.SimpleServiceBus.Commands.Interfaces;
 using DS.SimpleServiceBus.Extensions;
 using DS.SimpleServiceBus.RabbitMq.Configuration.Interfaces;
+using DS.SimpleServiceBus.RabbitMq.Services.Interfaces;
+using DS.SimpleServiceBus.Services;
 using DS.SimpleServiceBus.Services.Interfaces;
 using MassTransit;
-using IRabbitMqCommandService = DS.SimpleServiceBus.RabbitMq.Services.Interfaces.IRabbitMqCommandService;
 
 namespace DS.SimpleServiceBus.RabbitMq.Services
 {
-    internal class RabbitMqCommandService : SimpleServiceBus.Services.CommandService, IRabbitMqCommandService
+    internal class RabbitMqCommandService : CommandService, IRabbitMqCommandService
     {
-        public RabbitMqCommandService(IBusService busService, IRabbitMqCommandServiceConfiguration config) : base(busService,
+        public RabbitMqCommandService(IBusService busService, IRabbitMqCommandServiceConfiguration config) : base(
+            busService,
             config)
         {
         }

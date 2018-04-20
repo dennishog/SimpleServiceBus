@@ -1,9 +1,9 @@
-﻿using DS.SimpleServiceBus.EventHubs.Configuration;
+﻿using System;
+using DS.SimpleServiceBus.EventHubs.Configuration;
 using DS.SimpleServiceBus.EventHubs.Configuration.Interfaces;
 using DS.SimpleServiceBus.EventHubs.Services;
 using DS.SimpleServiceBus.Factories.Interfaces;
 using DS.SimpleServiceBus.Services.Interfaces;
-using System;
 
 namespace DS.SimpleServiceBus.EventHubs.Extensions
 {

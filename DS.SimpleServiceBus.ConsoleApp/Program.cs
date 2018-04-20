@@ -7,7 +7,6 @@ using DS.SimpleServiceBus.ConsoleApp.Commands.Models.Response;
 using DS.SimpleServiceBus.ConsoleApp.Events;
 using DS.SimpleServiceBus.ConsoleApp.Events.EventHandlers;
 using DS.SimpleServiceBus.ConsoleApp.Events.Models;
-using DS.SimpleServiceBus.EventHubs.Extensions;
 using DS.SimpleServiceBus.Factories;
 using DS.SimpleServiceBus.RabbitMq.Extensions;
 
@@ -25,12 +24,23 @@ namespace DS.SimpleServiceBus.ConsoleApp
             Console.WriteLine("Hello World!");
 
             #region RabbitMq
+
             var busService = BusServiceFactory.Create.UsingRabbitMq(cfg =>
             {
                 cfg.Uri = "rabbitmq://localhost/dsevents";
                 cfg.Username = "guest";
                 cfg.Password = "guest";
             });
+
+            //var busService = BusServiceFactory.Create.UsingEventHubs(x =>
+            //{
+            //    x.ConsumerGroup = "$Default";
+            //    x.EventHubConnectionString =
+            //        "Endpoint=sb://dssimpleservicebus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=NFMcYE+9OzcIz5fH62xuelvg6kRlEK39UocSI75G8rc=";
+            //    x.EventHubName = "dssimpleservicebuseventhub";
+            //    x.StorageConnectionString = "DefaultEndpointsProtocol=https;AccountName=dssimpleservicebus;AccountKey=NPbIUESnPnH3O8Xb9jwJMsSgkXBcWFlsRaDm+tl+1tTRa/gPGMy2B0TenLbQoEabaNlLNXNU4XsJ5/duu7zilQ==;EndpointSuffix=core.windows.net";
+            //    x.StorageAccountName = "dssimpleservicebus";
+            //});
 
             await busService.StartAsync(CancellationToken.None);
 
@@ -50,15 +60,15 @@ namespace DS.SimpleServiceBus.ConsoleApp
 
             await eventService.PublishAsync(new TestEvent
             {
-                Model = new TestModel { Id = 10, Name = "Dennis" }
+                Model = new TestModel {Id = 10, Name = "Dennis"}
             }, CancellationToken.None);
 
-            eventService.PublishAsync(new TestEvent2
+            await eventService.PublishAsync(new TestEvent2
             {
-                Model = new TestModel { Id = 10, Name = "Andreas" }
-            }, CancellationToken.None).Wait();
+                Model = new TestModel {Id = 10, Name = "Andreas"}
+            }, CancellationToken.None);
 
-            var request = new TestRequest { Id = 10 };
+            var request = new TestRequest {Id = 10};
             for (var i = 0; i < 20; i++)
             {
                 var response =
@@ -75,8 +85,8 @@ namespace DS.SimpleServiceBus.ConsoleApp
             await commandService.StopAsync(CancellationToken.None);
             await commandService2.StopAsync(CancellationToken.None);
             await eventService.StopAsync(CancellationToken.None);
-            #endregion
 
+            #endregion
 
 
             Console.ReadLine();

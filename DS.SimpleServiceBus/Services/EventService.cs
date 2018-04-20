@@ -38,12 +38,7 @@ namespace DS.SimpleServiceBus.Services
             _eventHandlers = new List<IEventHandler>();
         }
 
-        /// <summary>
-        ///     Publishes an event
-        /// </summary>
-        /// <param name="event"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public async Task PublishAsync(IEvent @event, CancellationToken cancellationToken)
         {
             var eventMessage = new EventMessage
@@ -54,25 +49,24 @@ namespace DS.SimpleServiceBus.Services
             await _busService.PublishAsync(eventMessage, cancellationToken);
         }
 
-        /// <summary>
-        ///     Adds an EventHandler
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <inheritdoc />
         public void RegisterEventHandler<T>() where T : IEventHandler
         {
             _eventHandlers.Add(Activator.CreateInstance<T>());
         }
 
+        /// <inheritdoc />
         public void RegisterEventHandler(IEventHandler eventHandler)
         {
             _eventHandlers.Add(eventHandler);
         }
 
+        /// <inheritdoc />
         public async Task EventMessageReceived(IEventMessage eventMessage, CancellationToken cancellationToken)
         {
             Debug.WriteLine($"Recieved event for type {eventMessage.GetType()}");
 
-            var @event = eventMessage.Event.FromBytes();
+            var @event = eventMessage.Event.GetEvent();
 
             // Get listeners for @event
             var listeners =
@@ -82,6 +76,7 @@ namespace DS.SimpleServiceBus.Services
                 await eventListener.ExecuteInternalAsync(@event, cancellationToken);
         }
 
+        /// <inheritdoc />
         public async Task StopAsync(CancellationToken cancellationToken)
         {
             await _busService.DisconnectHandlerAsync(_configuration.EventQueueName, cancellationToken);

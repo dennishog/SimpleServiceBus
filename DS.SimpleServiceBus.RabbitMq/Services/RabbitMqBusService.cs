@@ -1,17 +1,17 @@
-﻿using DS.SimpleServiceBus.Commands.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using DS.SimpleServiceBus.Commands.Interfaces;
 using DS.SimpleServiceBus.Events.Interfaces;
 using DS.SimpleServiceBus.Exceptions;
 using DS.SimpleServiceBus.RabbitMq.Commands;
 using DS.SimpleServiceBus.RabbitMq.Services.Interfaces;
 using DS.SimpleServiceBus.Services;
+using DS.SimpleServiceBus.Services.Interfaces;
 using MassTransit;
 using MassTransit.RabbitMqTransport;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using ICommandService = DS.SimpleServiceBus.Services.Interfaces.ICommandService;
 
 namespace DS.SimpleServiceBus.RabbitMq.Services
 {

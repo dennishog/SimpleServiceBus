@@ -4,6 +4,5 @@ namespace DS.SimpleServiceBus.EventHubs.Configuration.Interfaces
 {
     public interface IEventHubsEventServiceConfiguration : IEventServiceConfiguration
     {
-        
     }
 }

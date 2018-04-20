@@ -7,7 +7,8 @@ namespace DS.SimpleServiceBus.EventHubs.Services
 {
     public class EventHubsEventService : EventService, IEventHubsEventService
     {
-        public EventHubsEventService(IBusService busService, IEventServiceConfiguration action) : base(busService, action)
+        public EventHubsEventService(IBusService busService, IEventServiceConfiguration action) : base(busService,
+            action)
         {
         }
     }
