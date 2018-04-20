@@ -32,16 +32,6 @@ namespace DS.SimpleServiceBus.ConsoleApp
                 cfg.Password = "guest";
             });
 
-            //var busService = BusServiceFactory.Create.UsingEventHubs(x =>
-            //{
-            //    x.ConsumerGroup = "$Default";
-            //    x.EventHubConnectionString =
-            //        "Endpoint=sb://dssimpleservicebus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=NFMcYE+9OzcIz5fH62xuelvg6kRlEK39UocSI75G8rc=";
-            //    x.EventHubName = "dssimpleservicebuseventhub";
-            //    x.StorageConnectionString = "DefaultEndpointsProtocol=https;AccountName=dssimpleservicebus;AccountKey=NPbIUESnPnH3O8Xb9jwJMsSgkXBcWFlsRaDm+tl+1tTRa/gPGMy2B0TenLbQoEabaNlLNXNU4XsJ5/duu7zilQ==;EndpointSuffix=core.windows.net";
-            //    x.StorageAccountName = "dssimpleservicebus";
-            //});
-
             await busService.StartAsync(CancellationToken.None);
 
             var eventService =
