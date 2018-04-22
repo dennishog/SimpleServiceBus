@@ -4,5 +4,6 @@ namespace DS.SimpleServiceBus.InMemory.Configuration.Interfaces
 {
     public interface IInMemoryBusServiceConfiguration : IBusServiceConfiguration
     {
+        string QueuePath { get; set; }
     }
 }

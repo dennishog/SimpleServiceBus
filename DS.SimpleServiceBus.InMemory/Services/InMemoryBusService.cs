@@ -17,9 +17,20 @@ namespace DS.SimpleServiceBus.InMemory.Services
     {
         private Dictionary<string, ICommandService> _commandConsumers;
         private Dictionary<string, Func<IEventMessage, CancellationToken, Task>> _eventHandlers;
+        private readonly IInMemoryBusServiceConfiguration _configuration;
+        private readonly InMemoryEventProcessor _eventProcessor;
 
         public InMemoryBusService(IInMemoryBusServiceConfiguration configuration)
         {
+            _configuration = configuration;
+            _eventProcessor = new InMemoryEventProcessor(configuration.QueuePath);
+            _eventProcessor.MessageRecieved += EventProcessorOnMessageRecieved; 
+        }
+
+        private void EventProcessorOnMessageRecieved(object sender, InMemoryMessageReceivedEventArgs inMemoryMessageReceivedEventArgs)
+        {
+            _eventHandlers[inMemoryMessageReceivedEventArgs.QueueName](inMemoryMessageReceivedEventArgs.Message,
+                CancellationToken.None);
         }
 
         public override async Task StartAsync(CancellationToken cancellationToken)
@@ -69,7 +80,8 @@ namespace DS.SimpleServiceBus.InMemory.Services
         public override async Task ConnectHandlerAsync(string queueName,
             Func<IEventMessage, CancellationToken, Task> messageReceived, CancellationToken cancellationToken)
         {
-            await Task.Run(() => { _eventHandlers.Add(queueName, messageReceived); }, cancellationToken);
+            _eventHandlers.Add(queueName, messageReceived);
+            await _eventProcessor.ConnectHandler(queueName, cancellationToken);
         }
 
         public override async Task DisconnectHandlerAsync(string queueName, CancellationToken cancellationToken)
@@ -99,8 +111,7 @@ namespace DS.SimpleServiceBus.InMemory.Services
 
         public override async Task PublishAsync<T>(T message, CancellationToken cancellationToken)
         {
-            foreach (var keyValuePair in _eventHandlers)
-                await keyValuePair.Value(message, cancellationToken);
+            await _eventProcessor.Publish(message, cancellationToken);
         }
     }
 }

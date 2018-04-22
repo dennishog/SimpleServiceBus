@@ -32,7 +32,10 @@ namespace DS.SimpleServiceBus.ConsoleApp
             //    cfg.Password = "guest";
             //});
 
-            var busService = BusServiceFactory.Create.UsingInMemory(cfg => { });
+            var busService = BusServiceFactory.Create.UsingInMemory(cfg =>
+            {
+                cfg.QueuePath = @"C:\queues\";
+            });
 
             await busService.StartAsync(CancellationToken.None);
 
@@ -55,9 +58,19 @@ namespace DS.SimpleServiceBus.ConsoleApp
                 Model = new TestModel {Id = 10, Name = "Dennis"}
             }, CancellationToken.None);
 
+            await eventService.PublishAsync(new TestEvent
+            {
+                Model = new TestModel { Id = 10, Name = "Dennis" }
+            }, CancellationToken.None);
+
             await eventService.PublishAsync(new TestEvent2
             {
                 Model = new TestModel {Id = 10, Name = "Andreas"}
+            }, CancellationToken.None);
+
+            await eventService.PublishAsync(new TestEvent2
+            {
+                Model = new TestModel { Id = 10, Name = "Andreas" }
             }, CancellationToken.None);
 
             var request = new TestRequest {Id = 10};
@@ -74,6 +87,8 @@ namespace DS.SimpleServiceBus.ConsoleApp
                 Console.WriteLine($"Response with id {response2.Id} and name {response2.Name}");
             }
 
+            Console.ReadLine();
+
             await commandService.StopAsync(CancellationToken.None);
             await commandService2.StopAsync(CancellationToken.None);
             await eventService.StopAsync(CancellationToken.None);
@@ -81,7 +96,7 @@ namespace DS.SimpleServiceBus.ConsoleApp
             #endregion
 
 
-            Console.ReadLine();
+
         }
     }
 }
