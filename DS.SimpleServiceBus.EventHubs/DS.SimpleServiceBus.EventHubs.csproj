@@ -9,7 +9,7 @@
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/dennishog/SimpleServiceBus</PackageProjectUrl>
     <RepositoryUrl>https://github.com/dennishog/SimpleServiceBus</RepositoryUrl>
-    <Version>1.0.8</Version>
+    <Version>1.0.9</Version>
     <Description>Package for adding EventHubs communication through SimpleServiceBus</Description>
   </PropertyGroup>
 
