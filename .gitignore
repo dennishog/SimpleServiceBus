@@ -9,13 +9,10 @@
 /DS.SimpleServiceBus.ConsoleApp/obj
 /DS.SimpleServiceBus.Tests/bin
 /DS.SimpleServiceBus.Tests/obj
-/DS.SimpleServiceBus.RabbitMq/bin/Release/netstandard2.0
+/DS.SimpleServiceBus.RabbitMq/bin
 /DS.SimpleServiceBus.RabbitMq/obj
-/DS.SimpleServiceBus.EventHubs/bin/Release/netstandard2.0
+/DS.SimpleServiceBus.EventHubs/bin
 /DS.SimpleServiceBus.EventHubs/obj
-/DS.SimpleServiceBus.EventHubs/bin/Release
-*.nupkg
-/DS.SimpleServiceBus.RabbitMq/bin/Debug/netstandard2.0
-/DS.SimpleServiceBus.EventHubs/bin/Debug/netstandard2.0
-/DS.SimpleServiceBus.InMemory/bin/Debug/netstandard2.0
+/DS.SimpleServiceBus.InMemory/bin
 /DS.SimpleServiceBus.InMemory/obj
+/.vs
