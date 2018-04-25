@@ -9,9 +9,10 @@
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/dennishog/SimpleServiceBus</PackageProjectUrl>
     <RepositoryUrl>https://github.com/dennishog/SimpleServiceBus</RepositoryUrl>
-    <Version>1.0.9</Version>
-    <AssemblyVersion>1.0.9.0</AssemblyVersion>
+    <Version>1.1.0</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
     <Description>Package for adding RabbitMq communication through SimpleServiceBus</Description>
+    <PackageTags>RabbitMQ, Servicebus</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

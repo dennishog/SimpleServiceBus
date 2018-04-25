@@ -10,7 +10,8 @@
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/dennishog/SimpleServiceBus</PackageProjectUrl>
     <RepositoryUrl>https://github.com/dennishog/SimpleServiceBus</RepositoryUrl>
-    <Version>1.0.9</Version>
+    <Version>1.1.0</Version>
+    <PackageTags>InMemory, Servicebus</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

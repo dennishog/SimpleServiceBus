@@ -51,30 +51,19 @@ namespace DS.SimpleServiceBus.ConsoleApp
             var commandService2 =
                 CommandServiceFactory.Create.UsingInMemory(busService, x => x.CommandQueueName = "ds.commands2");
             commandService2.RegisterCommandHandler<TestCommandHandler2>();
+            
+            var @event = new TestEvent(() => new TestModel() { Id = 19, Name = "Dennis Andreas" });
+            @event.Model.Name = "Arne";
+            @event.Model.Id = null;
+            await eventService.PublishAsync(@event, CancellationToken.None);
 
-
-            await eventService.PublishAsync(new TestEvent
-            {
-                Model = new TestModel {Id = 10, Name = "Dennis"}
-            }, CancellationToken.None);
-
-            await eventService.PublishAsync(new TestEvent
-            {
-                Model = new TestModel { Id = 10, Name = "Dennis" }
-            }, CancellationToken.None);
-
-            await eventService.PublishAsync(new TestEvent2
-            {
-                Model = new TestModel {Id = 10, Name = "Andreas"}
-            }, CancellationToken.None);
-
-            await eventService.PublishAsync(new TestEvent2
-            {
-                Model = new TestModel { Id = 10, Name = "Andreas" }
-            }, CancellationToken.None);
-
+            var @event2 = new TestEvent2(() => new TestModel() { Id = 16, Name = "Pelle" });
+            @event2.Model.Name = "Bertil";
+            @event2.Model.Id = null;
+            await eventService.PublishAsync(@event2, CancellationToken.None);
+            
             var request = new TestRequest {Id = 10};
-            for (var i = 0; i < 20; i++)
+            for (var i = 0; i < 10; i++)
             {
                 var response =
                     await commandService.SendRequestAsync<TestRequest, TestResponse>(request, CancellationToken.None);
@@ -94,9 +83,6 @@ namespace DS.SimpleServiceBus.ConsoleApp
             await eventService.StopAsync(CancellationToken.None);
 
             #endregion
-
-
-
         }
     }
 }
